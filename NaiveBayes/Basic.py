@@ -2,7 +2,7 @@
 # author: Wukun
 import numpy as np
 from math import pi
-
+from Tools.DataProcess import ClassifierBase
 
 sqrt_2pi = (2 * pi) ** 0.5
 
@@ -28,7 +28,7 @@ class NBFunctions:
         return [func(_c=c) for c in range(n_category)]
 
 
-class NaiveBayes:
+class NaiveBayes(ClassifierBase):
 
     def __init__(self):
         super(NaiveBayes, self).__init__()

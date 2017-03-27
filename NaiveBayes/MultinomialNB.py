@@ -16,6 +16,7 @@ class MultinomialNB(NaiveBayes):
         cat_counter = np.bincount(y)
         n_possibilities = [len(feats) for feats in features]
 
+        # 按标签组织数据
         labels = [y == value for value in range(len(cat_counter))]
         labelled_x = [x[ci].T for ci in labels]
 
@@ -91,15 +92,15 @@ if __name__ == '__main__':
     nb = MultinomialNB()
     nb.fit(x_train, y_train)
     learning_time = time.time() - learning_time
-    predict_time = time.time()
-    y_train_pre = nb.predict(x_train)
-    y_test_pre = nb.predict(x_test)
-    predict_time = time.time() - predict_time
+    evaluate_time = time.time()
+    nb.evaluate(x_train, y_train)
+    nb.evaluate(x_test, y_test)
+    evaluate_time = time.time() - evaluate_time
     print(
         "Model building  : {:12.6} s\n"
         "Predict      : {:12.6} s\n"
         "Total           : {:12.6} s".format(
-            learning_time, predict_time,
-            learning_time + predict_time
+            learning_time, evaluate_time,
+            learning_time + evaluate_time
         )
     )
