@@ -3,7 +3,7 @@
 import numpy as np
 from math import log2
 
-from Cluster import Cluster
+from DecisionTree.Cluster import Cluster
 
 
 class CvDNode:

@@ -2,8 +2,8 @@
 # author: Wukun
 import numpy as np
 from math import pi
-from Tools.DataProcess import ClassifierBase
-
+from Tools.Bases import ClassifierBase
+from Tools.Timing import Timing
 sqrt_2pi = (2 * pi) ** 0.5
 
 
@@ -29,6 +29,7 @@ class NBFunctions:
 
 
 class NaiveBayes(ClassifierBase):
+    NaiveBayesTiming = Timing()
 
     def __init__(self):
         super(NaiveBayes, self).__init__()
@@ -45,10 +46,12 @@ class NaiveBayes(ClassifierBase):
     def feed_sample_weight(self, sample_weight=None):
         pass
 
+    @NaiveBayesTiming.timeit(level=2, prefix="[API] ")
     def get_prior_probability(self, lb=1):
         return [(_c_num + lb) / (len(self._y) + lb * len(self._cat_counter))
                 for _c_num in self._cat_counter]
 
+    @NaiveBayesTiming.timeit(level=2, prefix="[API] ")
     def fit(self, x=None, y=None, sample_weight=None, lb=1):
         if x is not None and y is not None:
             self.feed_data(x, y, sample_weight)
@@ -57,6 +60,7 @@ class NaiveBayes(ClassifierBase):
     def _fit(self, lb):
         pass
 
+    @NaiveBayesTiming.timeit(level=1, prefix="[API] ")
     def predict(self, x, get_raw_result=False):
         if isinstance(x, np.ndarray):
             x = x.tolist()

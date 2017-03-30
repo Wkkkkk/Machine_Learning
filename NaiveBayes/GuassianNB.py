@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 # author: Wukun
 import time
-from Basic import *
+from NaiveBayes.Basic import *
 
 from Tools.DataProcess import DataProcess
+from Tools.Timing import Timing
 
 
 class GuassianNB(NaiveBayes):
+    GaussianNBTiming = Timing()
+
+    @GaussianNBTiming.timeit(level=1, prefix="[API] ")
     def feed_data(self, x, y, sample_weight=None):
         if sample_weight is not None:
             sample_weight = np.array(sample_weight)
@@ -28,12 +32,14 @@ class GuassianNB(NaiveBayes):
         self._cat_counter, self.label_dic = cat_counter, label_dic
         self.feed_sample_weight(sample_weight)
 
+    @GaussianNBTiming.timeit(level=1, prefix="[Core] ")
     def feed_sample_weight(self, sample_weight=None):
         if sample_weight is not None:
             local_weight = sample_weight * len(sample_weight)
             for i, label in enumerate(self._label_zip):
                 self._labelled_x[i] *= local_weight[label]
 
+    @GaussianNBTiming.timeit(level=1, prefix="[Core] ")
     def _fit(self, lb):
         lb = 0
         n_category = len(self._cat_counter)

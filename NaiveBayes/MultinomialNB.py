@@ -2,13 +2,16 @@
 # author: Wukun
 import matplotlib.pyplot as plt
 import time
-from Basic import *
+from NaiveBayes.Basic import *
 
 from Tools.DataProcess import DataProcess
+from Tools.Timing import Timing
 
 
 class MultinomialNB(NaiveBayes):
+    MultinomialNBTiming = Timing()
 
+    @MultinomialNBTiming.timeit(level=1, prefix="[API] ")
     def feed_data(self, x, y, sample_weight=None):
         if sample_weight is not None:
             sample_weight = np.array(sample_weight)
@@ -27,6 +30,7 @@ class MultinomialNB(NaiveBayes):
         self._label_dic, self._feat_dic = label_dic, feat_dic
         self.feed_sample_weight(sample_weight)
 
+    @MultinomialNBTiming.timeit(level=1, prefix="[Core] ")
     def feed_sample_weight(self, sample_weight=None):
         """
         利用bincount快速计数
@@ -43,6 +47,7 @@ class MultinomialNB(NaiveBayes):
                     np.bincount(xx[dim], weights=sample_weight[label] / sample_weight[label].mean(), minlength=_p)
                     for label, xx in self._label_zip])
 
+    @MultinomialNBTiming.timeit(level=1, prefix="[Core] ")
     def _fit(self, lb):
         """
         构建模型
@@ -71,6 +76,7 @@ class MultinomialNB(NaiveBayes):
 
         return func
 
+    @MultinomialNBTiming.timeit(level=1, prefix="[Core] ")
     def _transfer_x(self, x):
         """
         特征映射

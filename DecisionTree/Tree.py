@@ -2,8 +2,8 @@
 # author: Wukun
 from copy import deepcopy
 from Tools.Timing import Timing
-from Tools.DataProcess import ClassifierBase
-from Node import *
+from Tools.Bases import ClassifierBase
+from DecisionTree.Node import *
 
 
 class CvDBase(ClassifierBase):
