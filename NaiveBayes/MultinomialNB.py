@@ -16,8 +16,9 @@ class MultinomialNB(NaiveBayes):
         cat_counter = np.bincount(y)
         n_possibilities = [len(feats) for feats in features]
 
-        # 按标签组织数据
+        # 获取每个特征在向量中对应的下标
         labels = [y == value for value in range(len(cat_counter))]
+        # 按特征组织数据
         labelled_x = [x[ci].T for ci in labels]
 
         self._x, self._y = x, y
