@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # author: Wukun
 import time
-import math
+from math import pi, sqrt, ceil
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -85,6 +85,23 @@ class DataProcess:
         if one_hot:
             return np.c_[x, y].astype(np.float32), z
         return np.c_[x, y].astype(np.float32),
+
+    @staticmethod
+    def gen_spin(size=50, n=7, n_class=7, scale=4, one_hot=True):
+        xs = np.zeros((size * n, 2), dtype=np.float32)
+        ys = np.zeros(size * n, dtype=np.int8)
+        for i in range(n):
+            ix = range(size * i, size * (i + 1))
+            r = np.linspace(0.0, 1, size + 1)[1:]
+            t = np.linspace(2 * i * pi / n, 2 * (i + scale) * pi / n, size) + np.random.random(size=size) * 0.1
+            xs[ix] = np.c_[r * np.sin(t), r * np.cos(t)]
+            ys[ix] = i % n_class
+        if not one_hot:
+            return xs, ys
+        z = []
+        for yy in ys:
+            z.append([0 if i != yy else 1 for i in range(n_class)])
+        return xs, np.array(z)
 
     @staticmethod
     def quantize_data(x, y, continuous=None, continuous_rate=0.1, separate=False):
